@@ -1,0 +1,111 @@
+\documentclass[11pt,a4paper]{article}
+
+% Paquetes básicos
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,english]{babel}
+\usepackage{graphicx}  
+\usepackage{amsmath,amssymb} 
+\usepackage{authblk}    
+\usepackage{hyperref}   
+\usepackage{setspace}   
+\usepackage{geometry}  
+\geometry{margin=1in}
+
+% Opcional: numeración de líneas
+\usepackage[left]{lineno}
+
+\title{\textbf{Final Assignment }}
+\author[1]{ Vui  Doan }
+\date{} % Vacío para no poner fecha
+
+\begin{document}
+
+\maketitle
+%\linenumbers % Activa numeración de líneas si lo deseas
+
+\section{Introducción}
+
+The dataset includes RNA-seq blood samples from 128 donors, including 100 COVID-19-positive and 26 COVID-19-negative patients. The gene expression matrix derived from this dataset was shortened and includes data for 100 genes. The dataset includes information regarding 25 covariates associated with each sample and donor, including disease status, hospital-free days over a continuous 45-day period, and levels of ferritin, among others. To select the gene shown in the main plots, correlations between the expression levels of each gene and the selected continuous covariate: hospital-free days over a continuous 45-day period (HFD-45) were computed. The gene showing the top positive correlation with HFD-45 was selected as our main gene. Since lower values of HFD-45 are linked to worse prognosis and a higher number of hospitalization days, negative correlations between a specific gene and HFD-45 allow us to identify genes that are associated with better prognosis. Using this method, we identified and selected \textit{ABCD4} as our main gene of interest.\textit{ABCD4}  ATP-binding cassette (ABC) transporter family. These proteins move molecules across  membranes using ATP. In the blood the cell types presenting the highest expression of this gene are Natural Killer cells wich detect cells that are infected by viruses or have become cancerous and elease substances that make pores in the membranes of the infected celss and release enzymes that enter through the pores and trigger apoptosis of those cells \cite{Ref2}.
+
+\section{Mathods}
+
+Gene expression derived from the blood samples of the128 donors was obtained from \cite{Ref1}. Correlation analyses were carried out between the selected continuous covariates HFD-45, Ferritin (ng/mL),  Fibrinogen (mg/dL) and all genes in the dataset and those showing the top positive and negative correlations were selected for each cavariate. For categorical covariates (Sex, Mechanical Ventilation, Disease Status) t-tests were carried out for each gene and the top positive and negatve associated genes were selected for each covariate based on the values of the t-test statistics. Plots were generated using the ggplot 2 library \cite{Ref3} and the heatmap was produced with the help of the pheatmap library \cite{Ref4}. Sample nemes were removed from the heatmap for clarity. Clustering for rows and columns is carried out by default using hierarchical clustering with complete linkage and euclidean distance. Principal component analysis of the gene expression data was carried out using the prcomp function. All analyses were conducted using R version 4.5.1 \cite{Ref5}.
+
+\section{Results}
+
+Table \ref{tab:Table1} shows the summary statistics for the three categoriacal and the three continous covariates selected. The dataset includes 51 females and 74  males .  \textit{ABCD4} expression values ranged from $2.47$ to $20$. Figure \ref{fig:Figure1} shows the histogram of the expression values of \textit{ABCD4} in our dataset. Figure \ref{fig:Figure2} shows the expression values of \textit{ABCD4}  compared to HFD-45. Higher expression levels of \textit{ABCD4}  seem to be associated with heger values of HFD-45 suggesiting shorter hospital stays in idividuals presenting higher expression levels of this gene in their blood samples. Females seemed to present higher levels of \textit{ABCD4}  compared to males and no clear differences were observed in gene expression were observed based on disease status. Figure  \ref{fig:Figure3} depicts the expression levels of  \textit{ABCD4} in COVID-19-positive and COVID-19-negative patients stratifiying by Sex. To produce the heatmap we selected the top associations in our analyses. (The most positively and negatively correlated genes with our continous covariates and the genes showing the positive and negative effects in our t-tests for categorical variables). FIgure  \ref{fig:Figure4}  shows a heatmap for the expression values of the selected genes. Higher expression of \textit{ABCA13}, \textit{ABHD5}, and \textit{ABCB6} seem to be associated with COVID-19-posive disease status. Finally principal component analysis (PCA) was carried out using all genes in the dataset. Using the full expression data PCA creates synthetic variables that capture the top variability of the data. It is a technich that allows to reduce the dimensionality of our data and allows us to visualize the dataset in two dimensions. In addition we can plot information regarding specific covariates by using colors and shapes. Based on the two first principal components COVID-19 -possitive samples seem to group in the bottom left of the plot whereas the COVID-19-negatve ones do it in the upper-right sector. No clear grouping based on Sex is observed in this plot.
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rlll}
+  \hline
+ & level & Female & Male \\ 
+  \hline
+n &  & 51 & 74 \\ 
+  HFD-45 (mean (SD)) &  & 26.37 (16.34) & 22.61 (17.02) \\ 
+  Ferritin (ng/mL) (mean (SD))&  & 619.28 (1054.33) & 993.35 (1013.05) \\ 
+  Fibrinogen (mg/dL) (mean (SD)) &  & 469.15 (163.26) & 550.72 (219.68) \\ 
+  Sex (\%) & Female & 51 (100.0) & 0 (0.0) \\ 
+   & Male & 0 (0.0) & 74 (100.0) \\ 
+  Mechanical Ventilation.  (\%) & no & 35 (68.6) & 39 (52.7) \\ 
+   & yes & 16 (31.4) & 35 (47.3) \\ 
+  Disease Status  (\%) & COVID-19 & 38 (74.5) & 62 (83.8) \\ 
+   & non-COVID-19 & 13 (25.5) & 12 (16.2) \\ 
+   \hline
+\end{tabular}
+\caption{Summary statistics for all the covariates}
+\label{tab:Table1}
+\end{table}
+
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{Plot_ABCD4_Hist.png}
+    \caption{Histogram of \textit{ABCD4}  expression.}
+    \label{fig:Figure1}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{Plot_ABCD4_Scatter.png}
+    \caption{Scatter plot displaying the expression values  of \textit{ABCD4}  and the HFD-45 scores.}
+    \label{fig:Figure2}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{Plot_ABCD4_Box.png}
+    \caption{Box plot showing the expression values  of \textit{ABCD4}  for COVID-19-positive and COVID-19-negative patients stratifiying by Sex.}
+    \label{fig:Figure3}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{Heatmap.png}
+    \caption{Heatmap  displaying the expression values  of the 10 selected genes and the annotations for Disease Status and Sex.}
+    \label{fig:Figure4}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{PlotPCA.png}
+    \caption{Principal component analsysis of the full gene expression data. COVID-19-positive patients are colored in red whereas COVID-19-negative patients are colored in blue. Circles represent females in the dataset whereas triangles are reserved for males.}
+    \label{fig:Figure5}
+\end{figure}
+
+\clearpage
+
+
+\begin{thebibliography}{99}
+\bibitem{Ref1} Overmyer, K. A., \textit{et al.} (2021).  Large-scale multi-omic analysis of COVID-19 severity.  \textit{Cell Systems, 12}(1), 23--40.e7.  doi:\href{https://doi.org/10.1016/j.cels.2020.10.003}{10.1016/j.cels.2020.10.003}
+\bibitem{Ref2}Coelho, D., \textit{et al.} (2012). Mutations in ABCD4 cause a new inborn error of vitamin B12 metabolism. \textit{Nature Genetics, 44}(10), 1152--1155. doi:\href{https://doi.org/10.1038/ng.2386}{10.1038/ng.2386}
+\bibitem{Ref3} Wickham, H. (2016). \textit{ggplot2: Elegant Graphics for Data Analysis} (2nd ed.). Springer. doi:\href{https://doi.org/10.1007/978-3-319-24277-4}{10.1007/978-3-319-24277-4}
+\bibitem{Ref4} Kolde, R., \textit{et al.} (2019). \textit{pheatmap: Pretty Heatmaps}. R package version 1.0.12.  Available at: \url{https://CRAN.R-project.org/package=pheatmap}
+\bibitem{Ref5} R Core Team, \textit{et al.} (2024).  \textit{R: A Language and Environment for Statistical Computing} (Version 4.5.1)  [Computer software]. R Foundation for Statistical Computing, Vienna, Austria.  Available at: \url{https://www.R-project.org/}
+
+\end{thebibliography}
+
+\end{document}
